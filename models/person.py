@@ -1,15 +1,36 @@
+
+"""
+Class Person is the Base class for Person type Fellow and Staff
+"""
 class Person(object):
 
-    def __init__(self, first_name, second_name, type):
+    def __init__(self, first_name, second_name):
         self.first_name = first_name
         self.second_name = second_name
-        if type is 'Y':
-            self.type = Fellow()
-        else:
-            self.type = Staff()
 
-class Fellow():
-    pass
+"""
+class Fellow inherits from the superclass person
+"""
+class Fellow(Person):
+    def __init__(self, first_name, second_name):
+        super().__init__(first_name, second_name)
+        self.first_name = first_name
+        self.second_name = second_name
+        self.person_type = "Fellow"
 
-class Staff():
-    pass
+    def __str__():
+        return self.person_type
+
+
+"""
+class Fellow inherits from the superclass person
+"""
+class Staff(Person):
+    def __init__(self, first_name, second_name):
+        super().__init__(first_name, second_name)
+        self.first_name = first_name
+        self.second_name = second_name
+        self.person_type = "Staff"
+
+    def __str__():
+        return self.person_type

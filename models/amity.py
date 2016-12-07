@@ -1,17 +1,30 @@
+from models.room import Room, LivingSpace, Office
+
 class Amity(object):
     name = 'Amity'
     def __init__(self):
-        pass
+        self.rooms = []
 
-    #a method to handle room creation. it requires a room name as the input
-    @property
-    def create_room(self):
-        pass
+    """ a method to handle room creation. it requires a room name as the input """
+    def create_room(self, name, type):
+        try:
+            if name.lower() not in [room.room_name.lower() for room in self.rooms]:
+                """ check to see the type of room a person wishes to create """
+                if type == 'L':
+                    #create room of type LivingSpace if the type is L to denote livingSpace
+                    room = LivingSpace(name)
+                    self.rooms.append(room)
+                else:
+                    room = Office(name)
+                    self.rooms.append(room)
+            return room
+        except NameError:
+            return 'Sorry a room with the same name already exixts!'
 
     #a method to implement adding a person to a room.
-    @property
-    def add_person(self):
-        pass
+    def add_person(self, first_name, second_name, accomodation=None):
+        self.first_name = first_name
+        self.second_name = second_name
 
     #a method to implement the reallocations of persons in Amity
     @property

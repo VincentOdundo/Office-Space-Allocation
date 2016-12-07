@@ -12,3 +12,17 @@ class TestClassRoom(unittest.TestCase):
     def testIsInstance(self):
         self.assertIsInstance(self.room, Room)
         self.assertIsInstance(self.office, Office)
+        self.assertIsInstance(self.livingSpace, LivingSpace)
+
+    """ test to expose the properites of the instances of livingSpace and Office"""
+    def test_propertiies_office_livingspace(self):
+        self.assertTrue(hasattr(self.livingSpace, 'no_of_occupants'))
+        self.assertTrue(hasattr(self.office, 'no_of_occupants'))
+
+        #get number of occupants from the wo instaces of office and livingSpace respectively
+        number_of_occupants_office = self.office.no_of_occupants
+        number_of_occupants_living = self.livingSpace.no_of_occupants
+
+        #assert they pick the correct values allocated as its number of occupants
+        self.assertEqual(number_of_occupants_office, 6)
+        self.assertEqual(number_of_occupants_living, 4)

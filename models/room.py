@@ -14,7 +14,7 @@ class LivingSpace(Room):
     def __init__(self, room_name):
         super().__init__(room_name)
         self.room_name = room_name
-        self.no_of_occupants = 6
+        self.no_of_occupants = 4
 
 """
 Class LivingSpace is to expose a room of type Office and the number of occupants
@@ -23,4 +23,4 @@ class Office(Room):
     def __init__(self, room_name):
         super().__init__(room_name)
         self.room_name = room_name
-        self.no_of_occupants = 4
+        self.no_of_occupants = 6

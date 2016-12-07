@@ -34,3 +34,18 @@ class TestClassAmity(unittest.TestCase):
         self.assertTrue(hasattr(self.Facility, 'print_room'))
         self.assertTrue(hasattr(self.Facility, 'save_state'))
         self.assertTrue(hasattr(self.Facility, 'load_state'))
+
+    """ Test method for create_room in amity class"""
+    def test_create_room(self):
+        """ create a room of type office """
+        room_one = self.Facility.create_room('narnia', 'O')
+
+        """ check to see the rooms has been aded to the numer of rooms in amity"""
+        self.assertEqual(len(self.Facility.rooms), 1)
+        room_two = self.Facility.create_room('narnia', 'O')
+        self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
+
+
+
+
+        """ test to check a room name can only be characters"""

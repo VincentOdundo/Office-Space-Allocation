@@ -10,42 +10,36 @@ class TestClassAmity(unittest.TestCase):
     def setUp(self):
         self.Facility = Amity()
 
-    """ test to check if an object can be created from the class Amity """
-    def testIsInstance(self):
-        self.assertIsInstance(self.Facility, Amity)
+    """ Test method for create_room in amity class"""
+    def test_create_room(self):
+        """ create a room of type office """
+        room_one = self.Facility.create_room('narnia-Office')
+        self.Facility.create_room('valahalla-Office')
 
-    """ test object has Amity class variables """
-    def test_amity_class_variables(self):
-        self.assertEqual(self.Facility.name, 'Amity')
+        """ check to see the room has been added to the numer of rooms in amity"""
+        self.assertEqual(len(self.Facility.rooms), 2)
+        self.assertEqual(len(self.Facility.offices), 2)
+        self.Facility.create_room('Hogwarts-LivingSpace')
+        self.assertEqual(len(self.Facility.livingspaces), 1)
+
+        """ Check to see you cannot add a room with the same name twice"""
+        room_two = self.Facility.create_room('narnia-Office')
+        self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
+
+    def test_add_person(self):
+        self.Facility.create_room('narnia-Office')
+        self.Facility.create_room('Hogwarts-LivingSpace')
+        """ add a person """
+        self.Facility.add_person('kayeli', 'dennis', 'Fellow', 'Y')
+
+        """ The list containnig the number of people should be extra one person"""
+        self.assertEqual(len(self.Facility.people), 1)
+        office = self.Facility.offices[0]
+        livingSpace = self.Facility.livingspaces[0]
+        self.assertEqual(len(office.current_occupancy), 1)
+        self.assertEqual(len(livingSpace.current_occupancy), 1)
 
     """ test whether the name attribute of class Amity can be modified """
     def test_amity_class_attributes_modification(self):
         setattr(self.Facility, self.Facility.name, 'Valhalla')
         self.assertNotEqual(self.Facility.name, 'Valhalla')
-
-    """ test to attest class Amity has all the methods """
-    def test_amity_properties(self):
-        self.assertTrue(hasattr(self.Facility, 'create_room'))
-        self.assertTrue(hasattr(self.Facility, 'add_person'))
-        self.assertTrue(hasattr(self.Facility, 'reallocate_person'))
-        self.assertTrue(hasattr(self.Facility, 'load_people'))
-        self.assertTrue(hasattr(self.Facility, 'print_allocations'))
-        self.assertTrue(hasattr(self.Facility, 'print_unallocated'))
-        self.assertTrue(hasattr(self.Facility, 'print_room'))
-        self.assertTrue(hasattr(self.Facility, 'save_state'))
-        self.assertTrue(hasattr(self.Facility, 'load_state'))
-
-    """ Test method for create_room in amity class"""
-    def test_create_room(self):
-        """ create a room of type office """
-        room_one = self.Facility.create_room('narnia', 'O')
-
-        """ check to see the rooms has been aded to the numer of rooms in amity"""
-        self.assertEqual(len(self.Facility.rooms), 1)
-        room_two = self.Facility.create_room('narnia', 'O')
-        self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
-
-
-
-
-        """ test to check a room name can only be characters"""

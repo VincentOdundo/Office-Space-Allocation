@@ -39,6 +39,11 @@ class TestClassAmity(unittest.TestCase):
         self.assertEqual(len(office.current_occupancy), 1)
         self.assertEqual(len(livingSpace.current_occupancy), 1)
 
+        """ add another fellow who doesnt need accomodation"""
+        self.Facility.add_person('mary', 'muchai', 'Fellow', 'N')
+        self.assertEqual(len(office.current_occupancy), 2)
+        self.assertEqual(len(livingSpace.current_occupancy), 1)
+
     """ test whether the name attribute of class Amity can be modified """
     def test_amity_class_attributes_modification(self):
         setattr(self.Facility, self.Facility.name, 'Valhalla')

@@ -31,30 +31,39 @@ class Amity(object):
         except NameError:
             return 'Sorry a room with the same name already exixts!'
 
-    """ a method to implement adding a person to a room."""
     def add_person(self, first_name, second_name, person_type, accomodation=None):
+        """ a method to implement adding a person to a room."""
         self.first_name = first_name
         self.second_name = second_name
         self.person_type = person_type
         self.accomodation = accomodation
 
         """ If person is a fellow and needs accomodation"""
-        if person_type == 'Fellow' and self.accomodation == 'Y':
+        if person_type == 'Fellow':
             person = Fellow(self.first_name, self.second_name)
 
             #increment the number of people in Amity
             self.people.append(person)
             #pick a random room and office from all the available offices and livingspaces to assign the fellow
-            Vacant_living_spaces = self.check_vacant_rooms(self.livingspaces)
-            LivingSpace = random.choice(Vacant_living_spaces)
-            Vacant_offices = self.check_vacant_rooms(self.offices)
-            office = random.choice(Vacant_offices)
-
-            """ add the fellow to the randomly picked office and living space"""
-            LivingSpace.current_occupancy.append(person)
-            office.current_occupancy.append(person)
-            return ''
-
+            if(self.accomodation == 'Y'):
+                try:
+                    if(self.livingspaces):
+                        Vacant_living_spaces = self.check_vacant_rooms(self.livingspaces)
+                        LivingSpace = random.choice(Vacant_living_spaces)
+                        LivingSpace.current_occupancy.append(person)
+                    else:
+                        raise IndexError
+                except IndexError:
+                    return 'there are no vacant_rooms or there are no livingspaces!'
+            try:
+                if(self.offices):
+                    Vacant_offices = self.check_vacant_rooms(self.offices)
+                    office = random.choice(Vacant_offices)
+                    office.current_occupancy.append(person)
+                else:
+                    raise IndexError
+            except IndexError:
+                return 'there are no offices or no vacant offices'
         elif person_type == 'Staff':
             person = Staff(self.first_name, self.second_name)
             #check for a vacant offices
@@ -73,8 +82,8 @@ class Amity(object):
             self.people.append(person)
             office.current_occupancy.append(person)
 
-    """ A utility function to assist in picking up a vacant room"""
     def check_vacant_rooms(self, list_of_rooms):
+        """ A utility function to assist in picking up a vacant room"""
         vacant_rooms = []
         """ process each room from the list of room objects to check it has space"""
         for room in list_of_rooms:
@@ -83,10 +92,15 @@ class Amity(object):
         #return the vacant rooms as a list
         return vacant_rooms
 
-    #a method to implement the reallocations of persons in Amity
-    @property
-    def reallocate_person(self):
-        pass
+    def reallocate_person(self, name, identifier, room_name):
+        """ a method to implement the reallocations of persons in Amity """
+        person = self.people[identifier]
+
+        for room in self.rooms:
+            if room.room_name == room_name:
+                room.append(person)
+                self.people.remove[person]
+
 
     #a method to implement Adds people to rooms from a txt file
     @property
@@ -103,9 +117,8 @@ class Amity(object):
     def print_unallocated(self):
         pass
 
-    #retrives a room given the room name as input
-    @property
-    def print_room(self):
+    def print_room(self, room_name):
+        """ retrives a room with persons in the room given room name as input """
         pass
 
     #Persists all the data stored in the app to a SQLite database

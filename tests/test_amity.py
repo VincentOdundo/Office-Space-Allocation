@@ -27,6 +27,7 @@ class TestClassAmity(unittest.TestCase):
         self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
 
     def test_add_person(self):
+        """ tests regarding adding a peson"""
         self.Facility.create_room('narnia-Office')
         self.Facility.create_room('Hogwarts-LivingSpace')
         """ add a person """
@@ -43,6 +44,19 @@ class TestClassAmity(unittest.TestCase):
         self.Facility.add_person('mary', 'muchai', 'Fellow', 'N')
         self.assertEqual(len(office.current_occupancy), 2)
         self.assertEqual(len(livingSpace.current_occupancy), 1)
+
+    def test_reallocate_person(self):
+        """ tests regarding printing people in a room"""
+        self.Facility.create_room('narnia-Office')
+
+        self.Facility.add_person('Dominic', 'Mogaka','Staff', 'N')
+        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'N')
+        self.Facility.add_person('Felix', 'Mogaka','Fellow', 'Y')
+
+        self.Facility.create_room('valahalla-Office')
+        self.Facility.reallocate_person('Dennis', 0,'valahalla')
+        self.assertEqual(len(self.Facility.offices[0].current_occupancy), 3)
+
 
     """ test whether the name attribute of class Amity can be modified """
     def test_amity_class_attributes_modification(self):

@@ -46,16 +46,17 @@ class TestClassAmity(unittest.TestCase):
         self.assertEqual(len(livingSpace.current_occupancy), 1)
 
     def test_reallocate_person(self):
-        """ tests regarding printing people in a room"""
+        """ tests regarding reallpcating a person to a different room"""
         self.Facility.create_room('narnia-Office')
+        self.Facility.create_room('python-LivingSpace')
 
-        self.Facility.add_person('Dominic', 'Mogaka','Staff', 'N')
-        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'N')
+        self.Facility.add_person('Dominic', 'Mogaka','Staff', 'Y')
+        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'Y')
         self.Facility.add_person('Felix', 'Mogaka','Fellow', 'Y')
 
         self.Facility.create_room('valahalla-Office')
-        self.Facility.reallocate_person('Dennis', 0,'valahalla')
-        self.assertEqual(len(self.Facility.offices[0].current_occupancy), 3)
+        self.Facility.reallocate_person('Dennis', 1,'valahalla')
+        self.assertEqual(len(self.Facility.offices[1].current_occupancy), 1)
 
 
     """ test whether the name attribute of class Amity can be modified """

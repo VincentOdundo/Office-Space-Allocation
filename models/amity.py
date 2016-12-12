@@ -39,31 +39,29 @@ class Amity(object):
         self.accomodation = accomodation
 
         """ If person is a fellow and needs accomodation"""
-        if person_type == 'Fellow':
+        if person_type == 'Fellow' and self.accomodation == 'Y':
             person = Fellow(self.first_name, self.second_name)
 
-            #increment the number of people in Amity
+            """ increment the number of people in Amity """
             self.people.append(person)
-            #pick a random room and office from all the available offices and livingspaces to assign the fellow
-            if(self.accomodation == 'Y'):
-                try:
-                    if(self.livingspaces):
-                        Vacant_living_spaces = self.check_vacant_rooms(self.livingspaces)
-                        LivingSpace = random.choice(Vacant_living_spaces)
-                        LivingSpace.current_occupancy.append(person)
-                    else:
-                        raise IndexError
-                except IndexError:
-                    return 'there are no vacant_rooms or there are no livingspaces!'
-            try:
-                if(self.offices):
-                    Vacant_offices = self.check_vacant_rooms(self.offices)
+            """ pick a random room and office from all the available offices
+                and livingspaces to assign the fellow
+            """
+            if (self.accomodation == 'Y'):
+                Vacant_living_spaces = self.check_vacant_rooms(self.livingspaces)
+                Vacant_offices = self.check_vacant_rooms(self.offices)
+                if(Vacant_living_spaces):
+                      LivingSpace = random.choice(Vacant_living_spaces)
+                      LivingSpace.current_occupancy.append(person)
+                      print (len(LivingSpace.current_occupancy))
+                else:
+                    print('sorry there are no living spaces')
+                if(Vacant_offices):
                     office = random.choice(Vacant_offices)
                     office.current_occupancy.append(person)
+                    print (len(office.current_occupancy))
                 else:
-                    raise IndexError
-            except IndexError:
-                return 'there are no offices or no vacant offices'
+                    print('sorry there are no vacant offices')
         elif person_type == 'Staff':
             person = Staff(self.first_name, self.second_name)
             #check for a vacant offices
@@ -98,8 +96,8 @@ class Amity(object):
 
         for room in self.rooms:
             if room.room_name == room_name:
-                room.append(person)
-                self.people.remove[person]
+                room.current_occupancy.append(person)
+                del self.people[identifier]
 
 
     #a method to implement Adds people to rooms from a txt file

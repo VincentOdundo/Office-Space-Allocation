@@ -50,8 +50,8 @@ class TestClassAmity(unittest.TestCase):
         self.Facility.create_room('narnia-Office')
         self.Facility.create_room('python-LivingSpace')
 
-        self.Facility.add_person('Dominic', 'Mogaka','Staff', 'Y')
-        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'Y')
+        self.Facility.add_person('Dominic', 'Mogaka','Staff', 'N')
+        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'N')
         self.Facility.add_person('Felix', 'Mogaka','Fellow', 'Y')
 
         self.Facility.create_room('valahalla-Office')

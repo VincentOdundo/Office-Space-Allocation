@@ -192,9 +192,19 @@ class Amity(object):
                 return "The text file is empty!"
 
     #Prints a list of allocations onto the screen
-    @property
     def print_allocations(self):
-        pass
+        if self.rooms:
+            allocations = ""
+            for room in self.rooms:
+                if room.current_occupancy:
+                    allocations = room.room_name+"\n"
+                    allocations += ", ".join([(person.first_name+' '+person.second_name+' '+person.person_type) for person in room.current_occupancy])
+                else:
+                    allocations += "there are no people in {}".format(room.room_name)
+            return allocations
+
+        else:
+            return "there are no rooms in amity yet!"
 
     #Prints a list of unallocated people to the screen
     def print_unallocated(self):
@@ -227,16 +237,17 @@ class Amity(object):
         pass
 
 amity = Amity()
-# amity.create_room('narnia-Office')
+amity.create_room('narnia-Office')
 # amity.create_room('python-LivingSpace')
-#
-# amity.add_person('Dominic', 'Mogaka','Staff', 'Y')
-# amity.add_person('Dennis', 'Mogaka','Fellow', 'Y')
-# amity.add_person('Felix', 'Mogaka','Fellow', 'Y')
-# amity.create_room('kilimani-Office')
+amity.create_room('kilimani-Office')
+
+amity.add_person('Dominic', 'Mogaka','Staff', 'Y')
+amity.add_person('Dennis', 'Mogaka','Staff', 'Y')
+amity.add_person('Felix', 'Mogaka','Staff', 'Y')
 # print('reallocating')
 # amity.reallocate_person('Dennis', 1, 'nyangoma')
 # amity.print_room('narnia')
 print(amity.load_people())
 amity.print_unallocated()
+print(amity.print_allocations())
 print(len(amity.unallocated))

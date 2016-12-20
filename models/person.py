@@ -17,6 +17,8 @@ class Fellow(Person):
         self.first_name = first_name
         self.second_name = second_name
         self.person_type = "Fellow"
+        self.alloted_office = None
+        self.alloted_living_space = None
 
     def __str__():
         return self.person_type
@@ -31,6 +33,7 @@ class Staff(Person):
         self.first_name = first_name
         self.second_name = second_name
         self.person_type = "Staff"
+        self.alloted_office = None
 
     def __str__():
         return self.person_type

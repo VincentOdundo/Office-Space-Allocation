@@ -17,9 +17,10 @@ class LivingSpace(Room):
         self.room_name = room_name
         self.no_of_occupants = 4
         self.current_occupancy = []
+        self.room_type = 'LivingSpace'
 
 """
-Class LivingSpace is to expose a room of type Office and the number of occupants
+Class Office is to expose a room of type Office and the number of occupants
 """
 class Office(Room):
     def __init__(self, room_name):
@@ -27,3 +28,4 @@ class Office(Room):
         self.room_name = room_name
         self.no_of_occupants = 6
         self.current_occupancy = []
+        self.room_type = 'Office'

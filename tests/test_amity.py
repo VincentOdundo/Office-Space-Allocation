@@ -59,7 +59,7 @@ class TestClassAmity(unittest.TestCase):
         self.assertEqual(len(self.Facility.offices[1].current_occupancy), 1)
 
 
-    """ test whether the name attribute of class Amity can be modified """
+    #test whether the name attribute of class Amity can be modified
     def test_amity_class_attributes_modification(self):
         setattr(self.Facility, self.Facility.name, 'Valhalla')
         self.assertNotEqual(self.Facility.name, 'Valhalla')

@@ -1,5 +1,5 @@
-from room import Room, LivingSpace, Office
-from person import Person, Fellow, Staff
+from models.room import Room, LivingSpace, Office
+from models.person import Person, Fellow, Staff
 import random
 
 class Amity(object):

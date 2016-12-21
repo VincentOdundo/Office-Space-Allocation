@@ -12,17 +12,17 @@ class TestClassAmity(unittest.TestCase):
 
     """ Test method for create_room in amity class"""
     def test_create_room(self):
-        """ create a room of type office """
+        #create a room of type office
         room_one = self.Facility.create_room('narnia-Office')
         self.Facility.create_room('valahalla-Office')
 
-        """ check to see the room has been added to the numer of rooms in amity"""
+        #check to see the room has been added to the numer of rooms in amity
         self.assertEqual(len(self.Facility.rooms), 2)
         self.assertEqual(len(self.Facility.offices), 2)
         self.Facility.create_room('Hogwarts-LivingSpace')
         self.assertEqual(len(self.Facility.livingspaces), 1)
 
-        """ Check to see you cannot add a room with the same name twice"""
+        #Check to see you cannot add a room with the same name twice
         room_two = self.Facility.create_room('narnia-Office')
         self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
 
@@ -30,17 +30,17 @@ class TestClassAmity(unittest.TestCase):
         """ tests regarding adding a peson"""
         self.Facility.create_room('narnia-Office')
         self.Facility.create_room('Hogwarts-LivingSpace')
-        """ add a person """
+        #add a person
         self.Facility.add_person('kayeli', 'dennis', 'Fellow', 'Y')
 
-        """ The list containnig the number of people should be extra one person"""
+        #The list containnig the number of people should be extra one person
         self.assertEqual(len(self.Facility.people), 1)
         office = self.Facility.offices[0]
         livingSpace = self.Facility.livingspaces[0]
         self.assertEqual(len(office.current_occupancy), 1)
         self.assertEqual(len(livingSpace.current_occupancy), 1)
 
-        """ add another fellow who doesnt need accomodation"""
+        #add another fellow who doesnt need accomodation
         self.Facility.add_person('mary', 'muchai', 'Fellow', 'N')
         self.assertEqual(len(office.current_occupancy), 2)
         self.assertEqual(len(livingSpace.current_occupancy), 1)

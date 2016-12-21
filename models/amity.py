@@ -172,24 +172,24 @@ class Amity(object):
             print('please check you are passing the correct person identifier!')
 
     #a method to implement Adds people to rooms from a txt file
-    # def load_people(self):
-    #     filename = './people.txt'
-    #     with open(filename, 'r') as persons_file:
-    #         people = persons_file.readlines()
-    #         if people:
-    #             for Person in people:
-    #                 person_details = Person.split()
-    #                 person_firstname = person_details[0]
-    #                 person_secondname = person_details[1]
-    #                 person_type = person_details[2]
-    #                 if person_type == 'FELLOW':
-    #                     accomodation = person_details[3]
-    #                     self.add_person(person_firstname, person_secondname, person_type, accomodation)
-    #                 else:
-    #                     accomodation = 'N'
-    #                     self.add_person(person_firstname, person_secondname, person_type, accomodation)
-    #         else:
-    #             return "The text file is empty!"
+    def load_people(self):
+        filename = './people.txt'
+        with open(filename, 'r') as persons_file:
+            people = persons_file.readlines()
+            if people:
+                for Person in people:
+                    person_details = Person.split()
+                    person_firstname = person_details[0]
+                    person_secondname = person_details[1]
+                    person_type = person_details[2]
+                    if person_type == 'FELLOW':
+                        accomodation = person_details[3]
+                        self.add_person(person_firstname, person_secondname, person_type, accomodation)
+                    else:
+                        accomodation = 'N'
+                        self.add_person(person_firstname, person_secondname, person_type, accomodation)
+            else:
+                return "The text file is empty!"
 
     #Prints a list of allocations onto the screen
     def print_allocations(self):
@@ -199,12 +199,12 @@ class Amity(object):
                 if room.current_occupancy:
                     allocations = room.room_name+"\n"
                     allocations += ", ".join([(person.first_name+' '+person.second_name+' '+person.person_type) for person in room.current_occupancy])
+                    print (allocations)
                 else:
                     allocations += "there are no people in {}".format(room.room_name)
-            return allocations
-
+                    print (allocations)
         else:
-            return "there are no rooms in amity yet!"
+            print('there are no rooms in amity yet!')
 
     #Prints a list of unallocated people to the screen
     def print_unallocated(self):
@@ -235,3 +235,8 @@ class Amity(object):
     @property
     def load_state(self):
         pass
+amity = Amity()
+amity.create_room('narnia-Office')
+#amity.load_people()
+amity.print_unallocated()
+amity.print_allocations()

@@ -7,6 +7,8 @@ class Person(object):
     def __init__(self, first_name, second_name):
         self.first_name = first_name
         self.second_name = second_name
+        self.person_identifier = id(self)
+
 
 """
 class Fellow inherits from the superclass person
@@ -19,6 +21,7 @@ class Fellow(Person):
         self.person_type = "Fellow"
         self.alloted_office = None
         self.alloted_living_space = None
+        self.person_identifier = id(self)
 
     def __str__():
         return self.person_type
@@ -34,6 +37,8 @@ class Staff(Person):
         self.second_name = second_name
         self.person_type = "Staff"
         self.alloted_office = None
+        self.person_identifier = id(self)
+
 
     def __str__():
         return self.person_type

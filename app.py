@@ -14,6 +14,7 @@ Usage:
     amity print_unallocated [--o=filename.txt]
     amity print_allocations [--o=filename.txt]
     amity print_room <room_name>
+    amity save_state
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
@@ -120,6 +121,12 @@ class MyInteractive (cmd.Cmd):
         """Usage: print_room <room_name>
         """
         self.amity.print_room(arg['<room_name>'])
+
+    @docopt_cmd
+    def do_save_state(self, arg):
+        """Usage: save_state
+        """
+        self.amity.save_state()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

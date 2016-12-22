@@ -1,5 +1,9 @@
 from models.room import Room, LivingSpace, Office
 from models.person import Person, Fellow, Staff
+from models.database import AmityOffices, AmityLiving, Persons, create_db, Base
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import select
 import random
 
 class Amity(object):
@@ -246,14 +250,53 @@ class Amity(object):
             return "No occupants in the room or room empty!"
 
     #Persists all the data stored in the app to a SQLite database
-    @property
-    def save_state(self):
-        pass
+    def save_state(self, dbname='Amity'):
+        engine = create_db(dbname)
+        Base.metadata.bind = engine
+        Session = sessionmaker()
+        session = Session()
+        #retrieve offices from the Database
+        offices_from_db = select([AmityOffices])
+        result = session.execute(offices_from_db)
+        room_names_from_db = [row.room_name for row in result]
+        for room in self.offices:
+            if room.room_name not in room_names_from_db:
+                new_room = AmityOffices(room_name=room.room_name)
+                session.add(new_room)
+                session.commit()
+        #retrieve livingspaces from the Database
+        livingspaces_from_db = select([AmityLiving])
+        result = session.execute(livingspaces_from_db)
+        livingspaces_names_from_db = [row.room_name for row in result]
+        for room in self.livingspaces:
+            if room.room_name not in livingspaces_names_from_db:
+                new_room = AmityLiving(room_name=room.room_name)
+                session.add(new_room)
+                session.commit()
+
+        #retrieve People from the Database
+        persons_from_db = select([Persons])
+        result = session.execute(persons_from_db)
+        person_identifier_from_db = [row.person_identifier for row in result]
+        for person in self.people:
+            if person.person_identifier not in person_identifier_from_db:
+                if person.person_type == 'Staff':
+                    new_person = Persons(fname=person.first_name, lname=person.second_name, person_identifier=person.person_identifier, role=person.person_type, office_allocated=person.alloted_office)
+                else:
+                    new_person = Persons(fname=person.first_name, lname=person.second_name, person_identifier=person.person_identifier, role=person.person_type, office_allocated=person.alloted_office, living_allocated=person.alloted_living_space)
+                session.add(new_person)
+                session.commit()
+
+
+
 
     #Loads data from a database into the application
     @property
     def load_state(self):
         pass
+
+
+
 # amity = Amity()
 # amity.create_room('narnia-Office')
 # #amity.load_people()

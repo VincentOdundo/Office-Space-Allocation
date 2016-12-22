@@ -255,7 +255,7 @@ class Amity(object):
         Base.metadata.bind = engine
         Session = sessionmaker()
         session = Session()
-        #retrieve offices from the Database
+        #retrieve offices from the Database to allow in comparisons and avoid redundancy
         offices_from_db = select([AmityOffices])
         result = session.execute(offices_from_db)
         room_names_from_db = [row.room_name for row in result]
@@ -264,7 +264,7 @@ class Amity(object):
                 new_room = AmityOffices(room_name=room.room_name)
                 session.add(new_room)
                 session.commit()
-        #retrieve livingspaces from the Database
+        #retrieve livingspaces from the Database to allow in comparisons and avoid redundancy
         livingspaces_from_db = select([AmityLiving])
         result = session.execute(livingspaces_from_db)
         livingspaces_names_from_db = [row.room_name for row in result]
@@ -274,7 +274,7 @@ class Amity(object):
                 session.add(new_room)
                 session.commit()
 
-        #retrieve People from the Database
+        #retrieve People from the Database to allow in comparisons and avoid redundancy
         persons_from_db = select([Persons])
         result = session.execute(persons_from_db)
         person_identifier_from_db = [row.person_identifier for row in result]
@@ -287,18 +287,38 @@ class Amity(object):
                 session.add(new_person)
                 session.commit()
 
-
-
-
     #Loads data from a database into the application
-    @property
-    def load_state(self):
-        pass
+    def load_state(self, dbname='Amity'):
+        engine = create_db(dbname)
+        Base.metadata.bind = engine
+        Session = sessionmaker()
+        session = Session()
+        #retrieve offices from the Database to allow in comparisons and avoid redundancy
+        offices_from_db = select([AmityOffices])
+        result = session.execute(offices_from_db)
+        for office in result.fetchall():
+            room_name = office.room_name
+            if room_name not in self.offices:
+                self.create_room('Office', room_name)
 
+        #retrieve LivingSpace from the Database to allow in comparisons and avoid redundancy
+        living_spaces_from_db = select([AmityLiving])
+        result = session.execute(living_spaces_from_db)
+        for living_space in result.fetchall():
+            living_space = living_space.room_name
+            if room_name not in self.livingspaces:
+                self.create_room('LivingSpace', room_name)
 
-
-# amity = Amity()
-# amity.create_room('narnia-Office')
-# #amity.load_people()
-# amity.print_unallocated()
-# amity.print_allocations()
+        #retrieve persons from the database to allow for comparisons and avoid redundancy
+        persons_from_db = select([Persons])
+        result = session.execute(persons_from_db)
+        for person in result.fetchall():
+            existing_persons_identifiers = [person.person_identifier for person in self.people ]
+            if person.person_identifier not in existing_persons_identifiers:
+                if person.role == 'Staff':
+                    self.add_person(person.fname, person.lname, person.role)
+                    self.reallocate_person(person.person_identifier, person.office_allocated)
+                elif person.role == 'Fellow':
+                    self.add_person(person.fname, person.lname, person.role)
+                    self.reallocate_person(person.person_identifier, person.office_allocated)
+                    self.reallocate_person(person.person_identifier, person.living_allocated)

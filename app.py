@@ -15,6 +15,7 @@ Usage:
     amity print_allocations [--o=filename.txt]
     amity print_room <room_name>
     amity save_state
+    amity load_state
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
@@ -127,6 +128,12 @@ class MyInteractive (cmd.Cmd):
         """Usage: save_state
         """
         self.amity.save_state()
+
+    @docopt_cmd
+    def do_load_state(self, arg):
+        """Usage: load_state
+        """
+        self.amity.load_state()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

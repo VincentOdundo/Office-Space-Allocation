@@ -2,64 +2,44 @@ import unittest
 
 from models.amity import Amity
 
-"""
-Base class for all the tests regarding Amity, and the Class Room
-"""
-
 class TestClassAmity(unittest.TestCase):
+    """
+    Base class for all the tests regarding Amity, and the Class Room
+    """
     def setUp(self):
         self.Facility = Amity()
 
-    """ Test method for create_room in amity class"""
     def test_create_room(self):
+        """ Test method for create_room in amity class"""
+        previous_room_count = len(self.Facility.rooms)
         #create a room of type office
-        room_one = self.Facility.create_room('narnia-Office')
-        self.Facility.create_room('valahalla-Office')
-
-        #check to see the room has been added to the numer of rooms in amity
-        self.assertEqual(len(self.Facility.rooms), 2)
-        self.assertEqual(len(self.Facility.offices), 2)
-        self.Facility.create_room('Hogwarts-LivingSpace')
-        self.assertEqual(len(self.Facility.livingspaces), 1)
-
+        self.Facility.create_room('Office', 'narnia')
+        self.Facility.create_room('Office', 'valahalla')
+        #check the number of rooms has incremented
+        self.assertNotEqual(len(self.Facility.rooms), previous_room_count)
         #Check to see you cannot add a room with the same name twice
-        room_two = self.Facility.create_room('narnia-Office')
-        self.assertEqual(room_two, 'Sorry a room with the same name already exixts!')
+        room_two = self.Facility.create_room('Office', 'narnia')
+        self.assertEqual(room_two, 'narnia room exists or you cannot create a room with the same name twice!')
 
     def test_add_person(self):
-        """ tests regarding adding a peson"""
-        self.Facility.create_room('narnia-Office')
-        self.Facility.create_room('Hogwarts-LivingSpace')
+        """ tests regarding adding a peson """
+        previous_count = len(self.Facility.people)
         #add a person
         self.Facility.add_person('kayeli', 'dennis', 'Fellow', 'Y')
+        #assert people count has increased
+        self.assertNotEqual(len(self.Facility.people), previous_count)
 
-        #The list containnig the number of people should be extra one person
-        self.assertEqual(len(self.Facility.people), 1)
-        office = self.Facility.offices[0]
-        livingSpace = self.Facility.livingspaces[0]
-        self.assertEqual(len(office.current_occupancy), 1)
-        self.assertEqual(len(livingSpace.current_occupancy), 1)
-
-        #add another fellow who doesnt need accomodation
-        self.Facility.add_person('mary', 'muchai', 'Fellow', 'N')
-        self.assertEqual(len(office.current_occupancy), 2)
-        self.assertEqual(len(livingSpace.current_occupancy), 1)
+        previous_unallocated_count = self.Facility.unallocated
+        #assert the number of people in unallocated list has incremented
+        self.assertNotEqual(len(self.Facility.unallocated), previous_unallocated_count)
 
     def test_reallocate_person(self):
-        """ tests regarding reallpcating a person to a different room"""
-        self.Facility.create_room('narnia-Office')
-        self.Facility.create_room('python-LivingSpace')
-
+        """ tests regarding reallocating a person to a different room"""
+        self.Facility.create_room('Office', 'narnia')
         self.Facility.add_person('Dominic', 'Mogaka','Staff', 'N')
-        self.Facility.add_person('Dennis', 'Mogaka','Staff', 'N')
-        self.Facility.add_person('Felix', 'Mogaka','Fellow', 'Y')
+        person_count_in_nania = self.Facility.rooms[0].current_occupancy
+        new_person = self.Facility.people[0]
 
-        self.Facility.create_room('valahalla-Office')
-        self.Facility.reallocate_person('Dennis', 1,'valahalla')
-        self.assertEqual(len(self.Facility.offices[1].current_occupancy), 1)
-
-
-    #test whether the name attribute of class Amity can be modified
-    def test_amity_class_attributes_modification(self):
-        setattr(self.Facility, self.Facility.name, 'Valhalla')
-        self.assertNotEqual(self.Facility.name, 'Valhalla')
+        self.Facility.create_room('Office', 'valahalla')
+        self.Facility.reallocate_person(new_person.person_identifier, 'valahalla')
+        self.assertNotEqual(len(self.Facility.rooms[0].current_occupancy), person_count_in_nania)

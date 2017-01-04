@@ -79,8 +79,9 @@ class MyInteractive (cmd.Cmd):
         if args['Office']:
             office_type = 'Office'
         else:
-            office_type = 'LivingSpace'
-        self.amity.create_room(office_type, rooms)
+            office_type = 'Living'
+        for room in rooms:
+            self.amity.create_room(office_type, room)
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -90,14 +91,14 @@ class MyInteractive (cmd.Cmd):
             person_type = 'Fellow'
         else:
             person_type = 'Staff'
-        wants_space = 'Y' if arg.get('<wants_space>') is 'Y' else 'N'
-        self.amity.add_person(arg['<first_name>'], arg['<last_name>'], person_type, wants_space)
+        wants_space = arg.get('<wants_space>') or "N"
+        print(self.amity.add_person(arg['<first_name>'], arg['<last_name>'], person_type, wants_space))
 
     @docopt_cmd
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_identifier> <new_room_name>
         """
-        self.amity.reallocate_person(arg['<person_identifier>'], arg['<new_room_name>'])
+        print(self.amity.reallocate_person(arg['<person_identifier>'], arg['<new_room_name>']))
 
     @docopt_cmd
     def do_load_people (self, arg):
@@ -109,13 +110,13 @@ class MyInteractive (cmd.Cmd):
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [--o=filename.txt]
         """
-        self.amity.print_unallocated(arg['--o'])
+        print(self.amity.print_unallocated(arg['--o']))
 
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [--o=filename.txt]
         """
-        self.amity.print_allocations(arg['--o'])
+        print(self.amity.print_allocations(arg['--o']))
 
     @docopt_cmd
     def do_print_room(self, arg):
